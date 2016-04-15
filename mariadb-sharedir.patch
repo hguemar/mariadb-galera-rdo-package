@@ -1,0 +1,49 @@
+diff -up mariadb-5.5.36/mysql-test/lib/My/ConfigFactory.pm.sharedir mariadb-5.5.36/mysql-test/lib/My/ConfigFactory.pm
+--- mariadb-5.5.36/mysql-test/lib/My/ConfigFactory.pm.sharedir	2014-03-25 16:25:41.971707774 +0100
++++ mariadb-5.5.36/mysql-test/lib/My/ConfigFactory.pm	2014-03-25 16:26:46.194773075 +0100
+@@ -46,7 +46,7 @@ my @pre_rules=
+ );
+ 
+ 
+-my @share_locations= ("share/mariadb", "share/mysql", "sql/share", "share");
++my @share_locations= ("share/mariadb-galera", "share/mariadb", "share/mysql", "sql/share", "share");
+ 
+ 
+ sub get_basedir {
+diff -up mariadb-5.5.36/mysql-test/mysql-test-run.pl.sharedir mariadb-5.5.36/mysql-test/mysql-test-run.pl
+--- mariadb-5.5.36/mysql-test/mysql-test-run.pl.sharedir	2014-03-25 16:25:41.974707777 +0100
++++ mariadb-5.5.36/mysql-test/mysql-test-run.pl	2014-03-25 16:29:02.202911454 +0100
+@@ -1322,12 +1322,14 @@ sub command_line_setup {
+   }
+ 
+   # Look for language files and charsetsdir, use same share
+-  $path_language=   mtr_path_exists("$bindir/share/mariadb",
++  $path_language=   mtr_path_exists("$bindir/share/mariadb-galera",
++                                    "$bindir/share/mariadb",
+                                     "$bindir/share/mysql",
+                                     "$bindir/sql/share",
+                                     "$bindir/share");
+   my $path_share= $path_language;
+-  $path_charsetsdir =   mtr_path_exists("$basedir/share/mariadb/charsets",
++  $path_charsetsdir =   mtr_path_exists("$basedir/share/mariadb-galera/charsets",
++                                    "$basedir/share/mariadb/charsets",
+                                     "$basedir/share/mysql/charsets",
+                                     "$basedir/sql/share/charsets",
+                                     "$basedir/share/charsets");
+@@ -2444,6 +2446,7 @@ sub environment_setup {
+   my $file_mysql_fix_privilege_tables=
+     mtr_file_exists("$bindir/scripts/mysql_fix_privilege_tables.sql",
+ 		    "$bindir/share/mysql_fix_privilege_tables.sql",
++		    "$bindir/share/mariadb-galera/mysql_fix_privilege_tables.sql",
+ 		    "$bindir/share/mariadb/mysql_fix_privilege_tables.sql",
+ 		    "$bindir/share/mysql/mysql_fix_privilege_tables.sql");
+   $ENV{'MYSQL_FIX_PRIVILEGE_TABLES'}=  $file_mysql_fix_privilege_tables;
+@@ -3553,7 +3556,7 @@ sub mysql_install_db {
+   }
+ 
+   my $path_sql= my_find_file($install_basedir,
+-			     ["mysql", "sql/share", "share/mariadb",
++			     ["mysql", "sql/share", "share/mariadb-galera", "share/mariadb",
+ 			      "share/mysql", "share", "scripts"],
+ 			     "mysql_system_tables.sql",
+ 			     NOT_REQUIRED);
