@@ -7,7 +7,7 @@
 
 Name: mariadb-galera
 Version: 5.5.40
-Release: 2%{?dist}
+Release: 3%{?dist}
 Epoch: 1
 
 Summary: A community developed branch of MySQL
@@ -21,7 +21,7 @@ License: GPLv2 with exceptions and LGPLv2 and BSD
 
 # Since galera only builds on these architectures, there is no reaon
 # to build mariadb-galera on other architectures (#1092068)
-ExclusiveArch: %{ix86} x86_64 %{arm}
+ExclusiveArch: %{ix86} x86_64 %{arm} aarch64
 
 # The evr of mysql we want to obsolete
 %global obsoleted_mysql_evr 5.6-0
@@ -931,6 +931,9 @@ fi
 # %{_mandir}/man1/mysql_client_test.1*
 
 %changelog
+* Fri Apr 15 2016 Haïkel Guémar <hguemar@fedoraproject.org> - 1:5.5.40-3
+- Add aarch64 to ExclusiveArch
+
 * Tue Nov 11 2014 Ryan O'Hara <rohara@redhat.com> - 1:5.5.40-2
 - Require lsof for wsrep_sst_rsync
   Resolves: #1148643
